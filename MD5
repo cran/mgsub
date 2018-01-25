@@ -1,0 +1,13 @@
+1531b56e4a8c71b95548e06f3f0e1255 *DESCRIPTION
+474bd5498d3429c3f9546492f6c4d433 *LICENSE
+df390c53434517b304ac5db487184641 *NAMESPACE
+a9c577a43126fe803e6f1cf0a9e5a6a9 *R/mgsub.R
+e6ae97a8eb6077dd2a2a0f212560a608 *README.md
+8497f1331fe96d1e3296dd4170e26bb6 *build/vignette.rds
+4f087dac8b74c3406e99ddbf3941afda *inst/doc/Safe-Substitution.R
+2fe1a468b9c67b4b7576c6b280161785 *inst/doc/Safe-Substitution.Rmd
+da8db7cd2811aa94a75ea4d8e462d3ac *inst/doc/Safe-Substitution.html
+44b6479758faa6c467b61dc03f601781 *man/mgsub.Rd
+d5625cb7a15f1d5b5ced47f6093b23bb *tests/testthat.R
+24861d3df8186c0d53e94a561886e861 *tests/testthat/test_mgsub.R
+2fe1a468b9c67b4b7576c6b280161785 *vignettes/Safe-Substitution.Rmd
