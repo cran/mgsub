@@ -102,81 +102,87 @@ s_new</code></pre></div>
 </div>
 <div id="mgsub" class="section level2">
 <h2>mgsub</h2>
-<p>This is where the idea of <code>mgsub</code> comes in. <code>mgsub</code> is a safe, simultaneous string substitution function. We pass in a named list (or named vector) of changes to make along with the string and the replacements are simultaneous. The names are the matching criteria and the values are the replacements.</p>
+<p>This is where the idea of <code>mgsub</code> comes in. <code>mgsub</code> is a safe, simultaneous string substitution function. We pass in a patterns to match as well as replacements and the replacements are applied simultaneously.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(mgsub)
 s =<span class="st"> &quot;hey ho, let's go!&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;hey&quot;</span>=<span class="st">&quot;ho&quot;</span>,<span class="st">&quot;ho&quot;</span>=<span class="st">&quot;hey&quot;</span>))</code></pre></div>
-<pre><code>## [1] &quot;ho hey, let's go!&quot;</code></pre>
-<p>Below you can see an example of using named vector. where the matches and replacements start out as independent vectors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;hey ho, let's go!&quot;</span>
-replacements =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;ho&quot;</span>,<span class="st">&quot;hey&quot;</span>)
-matches =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>,<span class="st">&quot;ho&quot;</span>)
-<span class="kw">names</span>(replacements) =<span class="st"> </span>matches
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,replacements)</code></pre></div>
-<pre><code>## [1] &quot;ho hey, let's go!&quot;</code></pre>
-<p>Below you can see an example of using a named vector where the names are defined inline.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;hey ho, let's go!&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>=<span class="st">&quot;ho&quot;</span>,<span class="st">&quot;ho&quot;</span>=<span class="st">&quot;hey&quot;</span>))</code></pre></div>
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(<span class="dt">string =</span> s,<span class="dt">pattern =</span> <span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>,<span class="st">&quot;ho&quot;</span>),<span class="dt">replacement =</span> <span class="kw">c</span>(<span class="st">&quot;ho&quot;</span>,<span class="st">&quot;hey&quot;</span>))</code></pre></div>
 <pre><code>## [1] &quot;ho hey, let's go!&quot;</code></pre>
 <div id="regular-expression-support" class="section level3">
 <h3>Regular Expression Support</h3>
 <p><code>mgsub</code> fully supports regular expressions as matching criteria as well as backreferences in the replacement. Note how the matching criteria ignores “dopachloride” for replacement but matches both “Dopazamine” and “dopastriamine” (all fake chemicals despite what the replace string claims!).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;Dopazamine is not the same as dopachloride or dopastriamine, yet is still fake.&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;[Dd]opa([^ ]*?mine)&quot;</span>=<span class="st">&quot;Meta</span><span class="ch">\\</span><span class="st">1&quot;</span>,<span class="st">&quot;fake&quot;</span>=<span class="st">&quot;real&quot;</span>))</code></pre></div>
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;[Dd]opa([^ ]*?mine)&quot;</span>,<span class="st">&quot;fake&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Meta</span><span class="ch">\\</span><span class="st">1&quot;</span>,<span class="st">&quot;real&quot;</span>)
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement)</code></pre></div>
 <pre><code>## [1] &quot;Metazamine is not the same as dopachloride or Metastriamine, yet is still real.&quot;</code></pre>
 <p>Furthermore, you can pass through any options from the <code>gsub</code> family. In the example below you can see fixed string matching</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;All my life I chased $money$ and .power. - not love!&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;$money$&quot;</span>=<span class="st">&quot;balloons&quot;</span>,<span class="st">&quot;.power.&quot;</span>=<span class="st">&quot;dolphins&quot;</span>,<span class="st">&quot;love&quot;</span>=<span class="st">&quot;success&quot;</span>),<span class="dt">fixed=</span><span class="ot">TRUE</span>)</code></pre></div>
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;$money$&quot;</span>,<span class="st">&quot;.power.&quot;</span>,<span class="st">&quot;love&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;balloons&quot;</span>,<span class="st">&quot;dolphins&quot;</span>,<span class="st">&quot;success&quot;</span>)
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement,<span class="dt">fixed=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## [1] &quot;All my life I chased balloons and dolphins - not success!&quot;</code></pre>
 </div>
 <div id="safe-substitution" class="section level3">
 <h3>Safe Substitution</h3>
-<p>This is actually the most compelling feature of <code>mgsub</code>. The package <code>qdap</code> implements a similar type function (also named <code>mgsub</code>) which does not employ safe substitution. Here safe means a few things:</p>
+<p>This is actually the most compelling feature of <code>mgsub</code>. Several packages implement a similar type function (also named <code>mgsub</code>) which do not employ safe substitution - <code>qdap</code>, <code>bazar</code> and <code>textclean</code>. A detailed analysis of safety can be found on <a href="https://thug-r.life/post/2018-01-26-mgsub-launched/">my blog</a>. Here is a quick overview of what is meant by safety:</p>
 <ol style="list-style-type: decimal">
 <li>Longer matches are preferred over shorter matches for substitution first</li>
 <li>No placeholders are used so accidental string collisions don’t occur</li>
 </ol>
 <p>First, a demonstration of the first form of safety. Note how we are searching for ‘they’ and ‘the’ where ‘the’ is a substring of ‘they’. If ‘the’ is matched before ‘they’, we would expect to see “ay don’t understand the value of what they seek.”, but in both cases, the replacements occur correctly.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s=<span class="st">&quot;they don't understand the value of what they seek.&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;the&quot;</span>=<span class="st">&quot;a&quot;</span>,<span class="st">&quot;they&quot;</span>=<span class="st">&quot;we&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;they don't understand the value of what they seek.&quot;</span>
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;the&quot;</span>,<span class="st">&quot;they&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;we&quot;</span>)
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement)</code></pre></div>
 <pre><code>## [1] &quot;we don't understand a value of what we seek.&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qdap<span class="op">::</span><span class="kw">mgsub</span>(<span class="kw">c</span>(<span class="st">&quot;the&quot;</span>,<span class="st">&quot;they&quot;</span>),<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;we&quot;</span>),s)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s)</code></pre></div>
 <pre><code>## [1] &quot;we don't understand a value of what we seek.&quot;</code></pre>
 <p>We can continue to test this by using variable length regular expression matches. Note that we provide two different matching criteria, one a regular expression of length 6 but which matches a length 10 and the other a match of length 9. However, <code>qdap</code> only prioritizes based on the length of the regular expression, not on the actual length of the match. While this is an edge case, it an example of safety provided by <code>mgsub</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s=<span class="st">&quot;Dopazamine is a fake chemical&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;dopazamin&quot;</span>=<span class="st">&quot;freakout&quot;</span>,<span class="st">&quot;do.*ne&quot;</span>=<span class="st">&quot;metazamine&quot;</span>),<span class="dt">ignore.case=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;Dopazamine is a fake chemical&quot;</span>
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;dopazamin&quot;</span>,<span class="st">&quot;do.*ne&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freakout&quot;</span>,<span class="st">&quot;metazamine&quot;</span>)
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement,<span class="dt">ignore.case=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## [1] &quot;metazamine is a fake chemical&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qdap<span class="op">::</span><span class="kw">mgsub</span>(<span class="kw">c</span>(<span class="st">&quot;dopazamin&quot;</span>,<span class="st">&quot;do.*ne&quot;</span>),<span class="kw">c</span>(<span class="st">&quot;freakout&quot;</span>,<span class="st">&quot;metazamine&quot;</span>),s,<span class="dt">fixed =</span> <span class="ot">FALSE</span>,<span class="dt">ignore.case=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s,<span class="dt">fixed =</span> <span class="ot">FALSE</span>,<span class="dt">ignore.case=</span><span class="ot">TRUE</span>)</code></pre></div>
 <pre><code>## [1] &quot;freakoute is a fake chemical&quot;</code></pre>
 <p>In the second case, <code>mgsub</code> does not utilize placeholders and therefore guarantees no string collisions when replacing. Consider a simple example of shifting each word in the following string one spot to the left. <code>mgsub</code> correctly shifts each word while <code>qdap</code> provides two wrong sets of substitutions depending on the other arguments you provide.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s=<span class="st">&quot;hey, how are you?&quot;</span>
-mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,<span class="kw">list</span>(<span class="st">&quot;hey&quot;</span>=<span class="st">&quot;how&quot;</span>,<span class="st">&quot;how&quot;</span>=<span class="st">&quot;are&quot;</span>,<span class="st">&quot;are&quot;</span>=<span class="st">&quot;you&quot;</span>,<span class="st">&quot;you&quot;</span>=<span class="st">&quot;hey&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">s =<span class="st"> &quot;hey, how are you?&quot;</span>
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>,<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>,<span class="st">&quot;hey&quot;</span>)
+mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement)</code></pre></div>
 <pre><code>## [1] &quot;how, are you hey?&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(<span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>,<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>),<span class="kw">c</span>(<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>,<span class="st">&quot;hey&quot;</span>),s))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s))</code></pre></div>
 <pre><code>## [1] &quot;how, are you how?&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(<span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>,<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>),<span class="kw">c</span>(<span class="st">&quot;how&quot;</span>,<span class="st">&quot;are&quot;</span>,<span class="st">&quot;you&quot;</span>,<span class="st">&quot;hey&quot;</span>),s
-            ,<span class="dt">fixed=</span><span class="ot">FALSE</span>,<span class="dt">ignore.case=</span><span class="ot">TRUE</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s,<span class="dt">fixed=</span><span class="ot">FALSE</span>,<span class="dt">ignore.case=</span><span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## [1] &quot;hey, hey hey hey?&quot;</code></pre>
 </div>
 </div>
 <div id="performance" class="section level2">
 <h2>Performance</h2>
-<p><code>mgsub</code> pays the price of safety in performance, potentially running slower than <code>qdap</code>.</p>
+<p><code>mgsub</code> pays the price of safety in performance. When only a single string is passed in to be modified, it runs about as fast as <code>qdap</code>. However, when multiple strings are passed in, <code>qdap</code> is far more elastic than <code>mgsub</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(microbenchmark)
 
-s =<span class="st"> &quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;</span>
-m =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;[Dd]opa(.*?mine)&quot;</span>,<span class="st">&quot;fake&quot;</span>)
-r =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Meta</span><span class="ch">\\</span><span class="st">1&quot;</span>,<span class="st">&quot;real&quot;</span>)
-<span class="kw">names</span>(r) =<span class="st"> </span>m
+s =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;</span>,
+      <span class="st">&quot;dopazamine is undergoing a review by the fake news arm of the Dopazamine government&quot;</span>)
+pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;[Dd]opa(.*?mine)&quot;</span>,<span class="st">&quot;fake&quot;</span>)
+replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Meta</span><span class="ch">\\</span><span class="st">1&quot;</span>,<span class="st">&quot;real&quot;</span>)
 
 <span class="kw">microbenchmark</span>(
-  <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,r),
-  <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(m,r,s,<span class="dt">fixed=</span><span class="ot">FALSE</span>)
+  <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s[<span class="dv">1</span>],pattern,replacement),
+  <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s[<span class="dv">1</span>],<span class="dt">fixed=</span><span class="ot">FALSE</span>)
 )</code></pre></div>
 <pre><code>## Unit: microseconds
-##   expr     min      lq     mean   median       uq      max neval
-##  mgsub 193.277 241.049 375.2300 294.8385 389.6525 2655.907   100
-##   qdap 173.584 200.753 249.6405 233.3905 273.3220  741.014   100</code></pre>
+##   expr     min       lq     mean  median      uq      max neval
+##  mgsub 167.020 188.7185 276.2177 212.787 319.271 1081.618   100
+##   qdap 170.667 181.7895 231.9466 196.012 254.360  918.609   100</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(
+  <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement),
+  <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s,<span class="dt">fixed=</span><span class="ot">FALSE</span>)
+)</code></pre></div>
+<pre><code>## Unit: microseconds
+##   expr     min       lq     mean  median       uq      max neval
+##  mgsub 396.035 452.0115 673.5460 665.891 833.6405 1326.312   100
+##   qdap 186.348 209.3220 302.4377 292.468 374.3365  649.117   100</code></pre>
 </div>
 
 

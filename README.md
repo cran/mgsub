@@ -2,24 +2,42 @@
 
 ***A safe, multiple, simultaneous string substitution function***
 
-[![Build Status](https://travis-ci.org/bmewing/mgsub.svg?branch=master)](https://travis-ci.org/bmewing/mgsub) [![Coverage Status](https://img.shields.io/codecov/c/github/bmewing/mgsub/master.svg)](https://codecov.io/github/bmewing/mgsub?branch=master)
-
 ## Why do I want this?
 You have a string you want to make substitutions on. You want to make many different substitutions at the same time and you want them done in a safe way.
 For example, you want to shift each word in "hey, how are you?" to the left by replacing "hey" with "how", "how" with "are, etc.  Existing functions either do not support vectorization (e.g. `gsub`), don't support simultaneous substition (e.g. `stringr::str_replace_all`) or do the replacements in an unsafe manner (e.g. `qdap::mgsub`).
 This is a lightweight, pure R function with no dependencies to avoid package bloat when being used.
 
 ## Install it!
-    
-    #install from this github repo
-    devtools::install_github("bmewing/mgsub")
+
+```r   
+install.packages('mgsub')
+#Install the latest version from GitHub
+#devtools::install_github("bmewing/mgsub")
+```
 
 ## Usage
 
-Conversions are supplied using a named list.  The name is the matching pattern, the value is the replacement.
+Simply pass in a vector of strings to be modified, a vector of patterns to match and a vector of replacements. Then watch as they are safely, simultaneously replaced!
 
-`mgsub::mgsub("hey, how are you?",list("hey"="how","how"="are","are"="you","you"="hey"))`
+```r
+mgsub::mgsub(string,pattern=c(),replacement=c(),recycle=FALSE,...)
+```
 
-Matches and replacements can be supplied as regex expressions.  Additional arguments can be passed to the `sub`/`gsub`/`gregexpr` family of internal functions.
+The pattern to match is supplied first and the replacement vector follows.
 
-`mgsub::mgsub("Dopazamine is not the same as Dopachloride and is still fake.", list("[Dd]opa(.*?mine)"="Meta\\1","fake"="real"),ignore.case=F)`
+```r
+mgsub::mgsub("hey, how are you?",c("hey","how","are","you"),c("how","are","you","hey"))
+```
+
+Recycling is to make it easy to provide a single replacement (or a pattern of replacements) for multiple matches.
+
+```r
+mgsub::mgsub("hey, ho, let's go!",c("hey","ho","go"),"ugh",recycle=TRUE)
+```
+
+Matches and replacements can still be supplied as regex exressions. Additional arguments can be passed to the `sub`/`gsub`/`gregexpr` family of internal functions.
+
+```r
+mgsub::mgsub("Dopazamine is not the same as Dopachloride and is still fake.", 
+             c("[Dd]opa(.*?mine)","fake"), c("Meta\\1","real"),ignore.case=F)
+```
