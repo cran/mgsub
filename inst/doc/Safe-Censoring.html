@@ -131,9 +131,9 @@ mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(<span class=
 pattern =<span class="st"> &quot;flip&quot;</span>
 censor =<span class="st"> &quot;?#!*&quot;</span>
 <span class="kw">print</span>(mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string,pattern,censor,<span class="dt">split=</span><span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## [1] &quot;Why don't you go #?*# a cookie?&quot;</code></pre>
+<pre><code>## [1] &quot;Why don't you go !**! a cookie?&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string,pattern,censor,<span class="dt">split=</span><span class="ot">TRUE</span>))</code></pre></div>
-<pre><code>## [1] &quot;Why don't you go !##* a cookie?&quot;</code></pre>
+<pre><code>## [1] &quot;Why don't you go !#!? a cookie?&quot;</code></pre>
 <p>The randomness can be limited by setting a seed.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">string =<span class="st"> &quot;Why don't you go flip a cookie?&quot;</span>
 pattern =<span class="st"> &quot;flip&quot;</span>
@@ -220,9 +220,9 @@ mgsub_censor_test =<span class="st"> </span><span class="cf">function</span>(){
   <span class="dt">mgsub_censor =</span> <span class="kw">mgsub_censor_test</span>()
 )</code></pre></div>
 <pre><code>## Unit: microseconds
-##          expr     min       lq     mean   median       uq      max neval
-##         mgsub 245.723 254.8465 328.0753 260.1025 290.7195 5951.617   100
-##  mgsub_censor 225.864 232.8305 276.1491 241.2885 274.3480 2231.258   100</code></pre>
+##          expr     min      lq     mean   median      uq     max neval
+##         mgsub 243.182 249.349 323.4905 256.5690 293.387 4015.47   100
+##  mgsub_censor 225.930 230.541 286.6295 263.1055 277.892 2216.52   100</code></pre>
 </div>
 
 

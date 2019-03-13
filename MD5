@@ -1,7 +1,7 @@
-a836096c6f23654b20ec0b8ab59523db *DESCRIPTION
+7820af558cb37899be75fba43b49c2f5 *DESCRIPTION
 0ca85256cd86d6755d78c38a8db28a29 *LICENSE
 aadd68d69436fb0f46c1a9d3b4a68d11 *NAMESPACE
-ea7feb8109bd4e3be4c4e8ccdb2f57a7 *NEWS.md
+d05623025db9509f875da1242a80b2fb *NEWS.md
 672b0700b4d0251c2583fb61e9eb1539 *R/helper_functions.R
 6a4a212eb89976e5c8d210f43c689dc6 *R/mgsub.R
 641b73f4d3892a0914b7fc8a7bb13dfe *R/mgsub_censor.R
@@ -9,10 +9,10 @@ ea7feb8109bd4e3be4c4e8ccdb2f57a7 *NEWS.md
 67ac938cfca04e2f77f4d55c167b981b *build/vignette.rds
 58e64b1e3d06db476291044c4a7ab36b *inst/doc/Safe-Censoring.R
 9c1432f6223389da3b903d31b37b3b49 *inst/doc/Safe-Censoring.Rmd
-d0e827d9aac82daa65b88ff372c1615c *inst/doc/Safe-Censoring.html
+0c063f78dd7667af408b397b338e2e3d *inst/doc/Safe-Censoring.html
 43e96042c53d1e976b9674e45c802e68 *inst/doc/Safe-Substitution.R
 f1070c4ed12e29cdb0c405184bccb84e *inst/doc/Safe-Substitution.Rmd
-a5ac212e8aa09cce37317ff78b437ef9 *inst/doc/Safe-Substitution.html
+8dd2519de85d899d83fa6ec0904074ae *inst/doc/Safe-Substitution.html
 9d39332d88aeab7f0251f79071831b6b *man/censor_worker.Rd
 f1f82d2eca0d36142bebc77b7e5fe2c3 *man/fastReplace.Rd
 f03793344ba319b3c509e56a9267ca2f *man/filterOverlap.Rd
@@ -22,6 +22,6 @@ cd8deb48edc2c06ba25c9ff0c0b471cb *man/mgsub.Rd
 d2c497b2ea3c97ffd822708778f894f3 *man/worker.Rd
 c5089ceb794b6acf8128f02cd129ea80 *tests/testthat.R
 714b5ec52970aa4da094fcae4f20a398 *tests/testthat/test_mgsub.R
-d1f1e3eff0df5bb14d4633870cc76791 *tests/testthat/test_mgsub_censor.R
+b7f59d55c7dab7a525a0c1ae00ff0cf9 *tests/testthat/test_mgsub_censor.R
 9c1432f6223389da3b903d31b37b3b49 *vignettes/Safe-Censoring.Rmd
 f1070c4ed12e29cdb0c405184bccb84e *vignettes/Safe-Substitution.Rmd

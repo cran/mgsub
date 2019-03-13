@@ -190,17 +190,17 @@ replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st"
   <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s[<span class="dv">1</span>],<span class="dt">fixed=</span><span class="ot">FALSE</span>)
 )</code></pre></div>
 <pre><code>## Unit: microseconds
-##   expr     min       lq      mean   median       uq     max neval
-##  mgsub 201.484 209.0525 217.11378 213.9990 218.3235 378.933   100
-##   qdap  72.561  77.5880  83.74041  82.5895  87.6125 162.357   100</code></pre>
+##   expr     min       lq     mean   median       uq     max neval
+##  mgsub 204.059 213.0485 230.5594 218.2920 225.8525 450.906   100
+##   qdap  73.477  79.6470  88.8760  86.7955  89.3210 160.603   100</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">microbenchmark</span>(
   <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s,pattern,replacement),
   <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern,replacement,s,<span class="dt">fixed=</span><span class="ot">FALSE</span>)
 )</code></pre></div>
 <pre><code>## Unit: microseconds
-##   expr     min       lq     mean   median      uq     max neval
-##  mgsub 416.318 440.7435 476.2836 475.8280 486.745 884.078   100
-##   qdap  88.496  94.3775 103.2788 103.0615 108.047 178.262   100</code></pre>
+##   expr     min       lq     mean   median       uq     max neval
+##  mgsub 416.185 430.3280 462.6522 441.2920 455.1010 742.372   100
+##   qdap  88.690  94.5075 102.3601 103.4725 106.5245 171.837   100</code></pre>
 </div>
 
 
