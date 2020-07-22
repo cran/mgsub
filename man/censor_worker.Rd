@@ -4,8 +4,14 @@
 \alias{censor_worker}
 \title{mgsub_censor worker}
 \usage{
-censor_worker(string, pattern, censor, split = any(nchar(censor) > 1),
-  seed = NULL, ...)
+censor_worker(
+  string,
+  pattern,
+  censor,
+  split = any(nchar(censor) > 1),
+  seed = NULL,
+  ...
+)
 }
 \arguments{
 \item{string}{a character vector where replacements are sought}
@@ -14,7 +20,7 @@ censor_worker(string, pattern, censor, split = any(nchar(censor) > 1),
 
 \item{censor}{character to use in censoring - see details}
 
-\item{split}{if a multicharacter censor pattern is provided, should it be 
+\item{split}{if a multicharacter censor pattern is provided, should it be
 split to preserve original string length}
 
 \item{seed}{optional parameter to fix sampling of multicharacter censors}
