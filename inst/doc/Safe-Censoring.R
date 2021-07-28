@@ -67,26 +67,3 @@ pattern = c("kilo", "kilogram")
 censor = "*"
 mgsub::mgsub_censor(string, pattern, censor)
 
-## -----------------------------------------------------------------------------
-library(microbenchmark)
-
-mgsub_test = function() {
-  string = "Time to flip this family into a fun pit of pudding!"
-  pattern = c("flip", "family", "fun")
-  replacement = vapply(pattern, function(x) {
-    paste(rep("*", nchar(x)), collapse = "")
-  }, FUN.VALUE = "")
-  mgsub::mgsub(string, pattern, replacement)
-}
-
-mgsub_censor_test = function() {
-  string = "Time to flip this family into a fun pit of pudding!"
-  pattern = c("flip", "family", "fun")
-  mgsub::mgsub_censor(string, pattern, "*")
-}
-
-microbenchmark(
-  mgsub = mgsub_test(),
-  mgsub_censor = mgsub_censor_test()
-)
-

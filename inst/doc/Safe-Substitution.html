@@ -12,7 +12,7 @@
 
 
 
-<title>Safe Substitution</title>
+<title>Safe String Substitution</title>
 
 
 
@@ -297,7 +297,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Safe Substitution</h1>
+<h1 class="title toc-ignore">Safe String Substitution</h1>
 
 
 
@@ -351,65 +351,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="safe-substitution" class="section level3">
 <h3>Safe Substitution</h3>
-<p>This is actually the most compelling feature of <code>mgsub</code>. Several packages implement a similar type function (also named <code>mgsub</code>) which do not employ safe substitution - <code>qdap</code>, <code>bazar</code> and <code>textclean</code>. A detailed analysis of safety can be found on <a href="https://thug-r.life/post/2018-01-26-mgsub-launched/">my blog</a>. Here is a quick overview of what is meant by safety:</p>
+<p>This is actually the most compelling feature of <code>mgsub</code>. Several packages implement a similar type function (also named <code>mgsub</code>) which do not employ safe substitution - <code>qdap</code>, <code>bazar</code> and <code>textclean</code>. Here is a quick overview of what is meant by safety:</p>
 <ol style="list-style-type: decimal">
 <li>Longer matches are preferred over shorter matches for substitution first</li>
 <li>No placeholders are used so accidental string collisions don’t occur</li>
 </ol>
-<p>First, a demonstration of the first form of safety. Note how we are searching for ‘they’ and ‘the’ where ‘the’ is a substring of ‘they’. If ‘the’ is matched before ‘they’, we would expect to see “ay don’t understand the value of what they seek.”, but in both cases, the replacements occur correctly.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">s =<span class="st"> &quot;they don't understand the value of what they seek.&quot;</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;the&quot;</span>, <span class="st">&quot;they&quot;</span>)</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;we&quot;</span>)</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">mgsub<span class="op">::</span><span class="kw">mgsub</span>(s, pattern, replacement)</a></code></pre></div>
-<pre><code>## [1] &quot;we don't understand a value of what we seek.&quot;</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s)</a></code></pre></div>
-<pre><code>## [1] &quot;we don't understand a value of what we seek.&quot;</code></pre>
-<p>We can continue to test this by using variable length regular expression matches. Note that we provide two different matching criteria, one a regular expression of length 6 but which matches a length 10 and the other a match of length 9. However, <code>qdap</code> only prioritizes based on the length of the regular expression, not on the actual length of the match. While this is an edge case, it an example of safety provided by <code>mgsub</code>.</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">s =<span class="st"> &quot;Dopazamine is a fake chemical&quot;</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2">pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;dopazamin&quot;</span>, <span class="st">&quot;do.*ne&quot;</span>)</a>
-<a class="sourceLine" id="cb19-3" data-line-number="3">replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;freakout&quot;</span>, <span class="st">&quot;metazamine&quot;</span>)</a>
-<a class="sourceLine" id="cb19-4" data-line-number="4">mgsub<span class="op">::</span><span class="kw">mgsub</span>(s, pattern, replacement, <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;metazamine is a fake chemical&quot;</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s, <span class="dt">fixed =</span> <span class="ot">FALSE</span>, <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## [1] &quot;freakoute is a fake chemical&quot;</code></pre>
-<p>In the second case, <code>mgsub</code> does not utilize placeholders and therefore guarantees no string collisions when replacing. Consider a simple example of shifting each word in the following string one spot to the left. <code>mgsub</code> correctly shifts each word while <code>qdap</code> provides two wrong sets of substitutions depending on the other arguments you provide.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">s =<span class="st"> &quot;hey, how are you?&quot;</span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2">pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;hey&quot;</span>, <span class="st">&quot;how&quot;</span>, <span class="st">&quot;are&quot;</span>, <span class="st">&quot;you&quot;</span>)</a>
-<a class="sourceLine" id="cb23-3" data-line-number="3">replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;how&quot;</span>, <span class="st">&quot;are&quot;</span>, <span class="st">&quot;you&quot;</span>, <span class="st">&quot;hey&quot;</span>)</a>
-<a class="sourceLine" id="cb23-4" data-line-number="4">mgsub<span class="op">::</span><span class="kw">mgsub</span>(s, pattern, replacement)</a></code></pre></div>
-<pre><code>## [1] &quot;how, are you hey?&quot;</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s))</a></code></pre></div>
-<pre><code>## [1] &quot;how, are you how?&quot;</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">print</span>(qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s, <span class="dt">fixed =</span> <span class="ot">FALSE</span>, <span class="dt">ignore.case =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
-<pre><code>## [1] &quot;hey, hey hey hey?&quot;</code></pre>
 </div>
-</div>
-<div id="performance" class="section level2">
-<h2>Performance</h2>
-<p><code>mgsub</code> pays the price of safety in performance. When only a single string is passed in to be modified, it runs about as fast as <code>qdap</code>. However, when multiple strings are passed in, <code>qdap</code> is far more elastic than <code>mgsub</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">s =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Dopazamine is not the same as Dopachloride and is still fake.&quot;</span>,</a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">      <span class="st">&quot;dopazamine is undergoing a review by the fake news arm of the Dopazamine government&quot;</span>)</a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;[Dd]opa(.*?mine)&quot;</span>, <span class="st">&quot;fake&quot;</span>)</a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">replacement =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Meta</span><span class="ch">\\</span><span class="st">1&quot;</span>, <span class="st">&quot;real&quot;</span>)</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb29-8" data-line-number="8"><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb29-9" data-line-number="9">  <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s[<span class="dv">1</span>], pattern, replacement),</a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">  <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s[<span class="dv">1</span>], <span class="dt">fixed =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11">)</a></code></pre></div>
-<pre><code>## Unit: microseconds
-##   expr     min       lq      mean   median       uq     max neval
-##  mgsub 154.401 157.5085 166.09614 163.7445 169.2980 291.607   100
-##   qdap  47.920  50.9605  55.57665  55.2865  58.8185  99.124   100</code></pre>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">  <span class="dt">mgsub =</span> mgsub<span class="op">::</span><span class="kw">mgsub</span>(s, pattern, replacement),</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">  <span class="dt">qdap =</span> qdap<span class="op">::</span><span class="kw">mgsub</span>(pattern, replacement, s, <span class="dt">fixed =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">)</a></code></pre></div>
-<pre><code>## Unit: microseconds
-##   expr     min       lq      mean   median       uq     max neval
-##  mgsub 319.401 326.4465 335.79102 333.4840 337.4685 434.950   100
-##   qdap  54.882  60.0235  65.00009  65.9265  67.0450 120.468   100</code></pre>
 </div>
 
 

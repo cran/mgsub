@@ -1,7 +1,7 @@
 Package: mgsub
 Type: Package
 Title: Safe, Multiple, Simultaneous String Substitution
-Version: 1.7.2
+Version: 1.7.3
 Authors@R: c(
   person("Mark", "Ewing", email="b.mark@ewingsonline.com", role=c("aut","cre"))
   )
@@ -11,13 +11,12 @@ Description: Designed to enable simultaneous substitution in strings in a safe f
 License: MIT + file LICENSE
 Encoding: UTF-8
 ByteCompile: true
-LazyData: true
 RoxygenNote: 7.1.1
-Suggests: covr, testthat, knitr, rmarkdown, qdap, microbenchmark
+Suggests: covr, testthat, knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2020-07-22 12:04:38 UTC; mark
+Packaged: 2021-07-28 19:30:42 UTC; mark
 Author: Mark Ewing [aut, cre]
 Maintainer: Mark Ewing <b.mark@ewingsonline.com>
 Repository: CRAN
-Date/Publication: 2020-07-22 12:30:03 UTC
+Date/Publication: 2021-07-28 19:50:01 UTC

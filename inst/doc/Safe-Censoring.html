@@ -340,9 +340,9 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb7-2" data-line-number="2">pattern =<span class="st"> &quot;flip&quot;</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">censor =<span class="st"> &quot;?#!*&quot;</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">print</span>(mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string, pattern, censor, <span class="dt">split =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
-<pre><code>## [1] &quot;Why don't you go ##*! a cookie?&quot;</code></pre>
+<pre><code>## [1] &quot;Why don't you go !??* a cookie?&quot;</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">print</span>(mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string, pattern, censor, <span class="dt">split =</span> <span class="ot">TRUE</span>))</a></code></pre></div>
-<pre><code>## [1] &quot;Why don't you go *?*# a cookie?&quot;</code></pre>
+<pre><code>## [1] &quot;Why don't you go #!*! a cookie?&quot;</code></pre>
 <p>The randomness can be limited by setting a seed.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">string =<span class="st"> &quot;Why don't you go flip a cookie?&quot;</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2">pattern =<span class="st"> &quot;flip&quot;</span></a>
@@ -403,35 +403,6 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb29-4" data-line-number="4">mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string, pattern, censor)</a></code></pre></div>
 <pre><code>## [1] &quot;I'm selling 100 ********s of bleach for $20/****&quot;</code></pre>
 </div>
-</div>
-<div id="performance" class="section level2">
-<h2>Performance</h2>
-<p>How does <code>mgsub_censor</code> stack up against <code>mgsub</code> in the fixed case? In this toy example, it’s not making a huge impact, but it is about 10% faster thanks to not needing to generate replacement strings first.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">library</span>(microbenchmark)</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">mgsub_test =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">  string =<span class="st"> &quot;Time to flip this family into a fun pit of pudding!&quot;</span></a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">  pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;flip&quot;</span>, <span class="st">&quot;family&quot;</span>, <span class="st">&quot;fun&quot;</span>)</a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">  replacement =<span class="st"> </span><span class="kw">vapply</span>(pattern, <span class="cf">function</span>(x) {</a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">    <span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">&quot;*&quot;</span>, <span class="kw">nchar</span>(x)), <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb31-8" data-line-number="8">  }, <span class="dt">FUN.VALUE =</span> <span class="st">&quot;&quot;</span>)</a>
-<a class="sourceLine" id="cb31-9" data-line-number="9">  mgsub<span class="op">::</span><span class="kw">mgsub</span>(string, pattern, replacement)</a>
-<a class="sourceLine" id="cb31-10" data-line-number="10">}</a>
-<a class="sourceLine" id="cb31-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb31-12" data-line-number="12">mgsub_censor_test =<span class="st"> </span><span class="cf">function</span>() {</a>
-<a class="sourceLine" id="cb31-13" data-line-number="13">  string =<span class="st"> &quot;Time to flip this family into a fun pit of pudding!&quot;</span></a>
-<a class="sourceLine" id="cb31-14" data-line-number="14">  pattern =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;flip&quot;</span>, <span class="st">&quot;family&quot;</span>, <span class="st">&quot;fun&quot;</span>)</a>
-<a class="sourceLine" id="cb31-15" data-line-number="15">  mgsub<span class="op">::</span><span class="kw">mgsub_censor</span>(string, pattern, <span class="st">&quot;*&quot;</span>)</a>
-<a class="sourceLine" id="cb31-16" data-line-number="16">}</a>
-<a class="sourceLine" id="cb31-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb31-18" data-line-number="18"><span class="kw">microbenchmark</span>(</a>
-<a class="sourceLine" id="cb31-19" data-line-number="19">  <span class="dt">mgsub =</span> <span class="kw">mgsub_test</span>(),</a>
-<a class="sourceLine" id="cb31-20" data-line-number="20">  <span class="dt">mgsub_censor =</span> <span class="kw">mgsub_censor_test</span>()</a>
-<a class="sourceLine" id="cb31-21" data-line-number="21">)</a></code></pre></div>
-<pre><code>## Unit: microseconds
-##          expr     min       lq     mean   median       uq      max neval
-##         mgsub 195.423 206.3015 265.2433 252.6945 259.5345 2920.636   100
-##  mgsub_censor 174.589 183.5115 226.1084 229.4725 235.0905 1359.917   100</code></pre>
 </div>
 
 
