@@ -2,7 +2,7 @@
 
 ***A safe, multiple, simultaneous string substitution function***
 
-[![Build Status](https://travis-ci.org/bmewing/mgsub.svg?branch=master)](https://travis-ci.org/bmewing/mgsub) [![Coverage Status](https://img.shields.io/codecov/c/github/bmewing/mgsub/master.svg)](https://codecov.io/github/bmewing/mgsub?branch=master) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/mgsub)](https://CRAN.R-project.org/package=mgsub) ![](http://cranlogs.r-pkg.org/badges/mgsub) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2029/badge)](https://bestpractices.coreinfrastructure.org/projects/2029)
+[![R-CMD-check](https://github.com/bmewing/mgsub/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/bmewing/mgsub/actions/workflows/R-CMD-check.yaml) [![Codecov test coverage](https://codecov.io/gh/bmewing/mgsub/graph/badge.svg)](https://app.codecov.io/gh/bmewing/mgsub) [![](https://www.r-pkg.org/badges/version/mgsub)](https://cran.r-project.org/package=mgsub) [![](https://cranlogs.r-pkg.org/badges/mgsub)](https://cran.r-project.org/package=mgsub) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/2029/badge)](https://bestpractices.coreinfrastructure.org/projects/2029)
 
 ## Why do I want this?
 You have a string you want to make substitutions on. You want to make many different substitutions at the same time and you want them done in a safe way.
@@ -37,7 +37,7 @@ Recycling is to make it easy to provide a single replacement (or a pattern of re
 mgsub::mgsub("hey, ho, let's go!",c("hey","ho","go"),"ugh",recycle=TRUE)
 ```
 
-Matches and replacements can still be supplied as regex exressions. Additional arguments can be passed to the `sub`/`gsub`/`gregexpr` family of internal functions.
+Matches and replacements can still be supplied as regex expressions. Additional arguments can be passed to the `sub`/`gsub`/`gregexpr` family of internal functions.
 
 ```r
 mgsub::mgsub("Dopazamine is not the same as Dopachloride and is still fake.", 
